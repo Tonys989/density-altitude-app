@@ -37,7 +37,7 @@ body {
 </style>
 """, unsafe_allow_html=True)
 
-st.title("✈️ Density Altitude Calculator (Garmin‑Style)")
+st.title("✈️ Density Altitude Calculator ")
 
 # Inputs
 qnh = st.number_input("QNH (hPa)", value=1013)
