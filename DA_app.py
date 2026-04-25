@@ -1,7 +1,5 @@
 import streamlit as st
 
-import streamlit as st
-
 st.set_page_config(page_title="EFC", layout="centered")
 
 # --- MENU SYSTEM ---
@@ -57,7 +55,7 @@ if menu == "Weight & Balance (coming soon)":
 
 
 # --- Garmin-style UI theme ---
-st.set_page_config(page_title="Density Altitude", layout="centered")
+# ---st.set_page_config(page_title="Density Altitude", layout="centered")
 
 st.markdown("""
 <style>
