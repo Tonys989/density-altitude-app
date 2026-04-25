@@ -457,6 +457,9 @@ st.markdown("""
         border: 2px solid #ffcc33 !important;
     }
 
+    </style>
+""", unsafe_allow_html=True)
+
 st.markdown("""
 <script>
 document.addEventListener('DOMContentLoaded', function() {
