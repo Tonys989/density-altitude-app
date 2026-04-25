@@ -457,5 +457,19 @@ st.markdown("""
         border: 2px solid #ffcc33 !important;
     }
 
+st.markdown("""
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="number"]');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            setTimeout(() => { this.select(); }, 50);
+        });
+    });
+});
+</script>
+""", unsafe_allow_html=True)
+
+
 </style>
 """, unsafe_allow_html=True)
