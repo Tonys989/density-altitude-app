@@ -182,37 +182,25 @@ if menu == "Crosswind Component":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# MODULE 6 — WEIGHT & BALANCE
-# ---------------------------------------------------------
-if menu == "Weight & Balance":
-    st.title("⚖️ Weight & Balance")
-
-    st.write("Simple CG calculator")
-
-    weight1 = st.number_input("Pilot + Passenger Weight (kg)", value=150)
-    arm1 = st.number_input("Pilot Arm (mm)", value=300)
-
-    weight2 = st.number_input("Fuel Weight (kg)", value=40)
-    arm2 = st.number_input("Fuel Arm (mm)", value=400)
-
-    total_weight = weight1 + weight2
-    total_moment = weight1 * arm1 + weight2 * arm2
-    cg = total_moment / total_weight if total_weight > 0 else 0
-
-    st.markdown('<div class="instrument-box">', unsafe_allow_html=True)
-    st.markdown('<div class="instrument-title">Total Weight</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="instrument-value">{total_weight:.0f} kg</div>', unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ---------------------------------------------------------
 # MODULE 7 — E6B SPEED / TIME / DISTANCE / FUEL
 # ---------------------------------------------------------
 if menu == "E6B Speed / Time / Distance / Fuel":
     st.title("⏱️ E6B Speed / Time / Distance / Fuel")
 
-    st.write("Solve any one of the four: Speed, Time, Distance, Fuel")
+    # -----------------------------
+    # CLEAR ALL BUTTON
+    # -----------------------------
+    if st.button("🧹 Clear All Inputs"):
+        st.session_state["e6b_speed"] = 0.0
+        st.session_state["e6b_distance"] = 0.0
+        st.session_state["e6b_time"] = 0.0
+        st.session_state["e6b_fuel_burn"] = 0.0
+        st.session_state["e6b_reserve"] = 0
+        st.rerun()
 
+    # -----------------------------
+    # MODE SELECTOR
+    # -----------------------------
     solve_for = st.selectbox(
         "What do you want to solve for?",
         ["Time", "Distance", "Speed", "Fuel"]
@@ -220,78 +208,254 @@ if menu == "E6B Speed / Time / Distance / Fuel":
 
     st.subheader("Inputs")
 
-    speed = st.number_input("Speed", value=90.0)
+    # -----------------------------
+    # INPUT ENABLE/DISABLE LOGIC
+    # -----------------------------
+    disable_speed = solve_for == "Speed"
+    disable_distance = solve_for == "Distance"
+    disable_time = solve_for in ["Time", "Fuel"]  # Fuel auto-calculates time
+    disable_fuel_burn = solve_for != "Fuel"
+    disable_reserve = solve_for != "Fuel"
+
+    # -----------------------------
+    # INPUT FIELDS (with session state)
+    # -----------------------------
+    speed = st.number_input(
+        "Speed",
+        value=st.session_state.get("e6b_speed", 0.0),
+        disabled=disable_speed
+    )
+    st.session_state["e6b_speed"] = speed
+
     speed_units = st.selectbox("Speed Units", ["kt", "km/h"])
 
-    distance = st.number_input("Distance", value=50.0)
+    distance = st.number_input(
+        "Distance",
+        value=st.session_state.get("e6b_distance", 0.0),
+        disabled=disable_distance
+    )
+    st.session_state["e6b_distance"] = distance
+
     distance_units = st.selectbox("Distance Units", ["NM", "km"])
 
-    time_hours = st.number_input("Time (decimal hours)", value=0.5)
+    # TIME FIELD — may be auto-filled later
+    time_hours = st.number_input(
+        "Time (decimal hours)",
+        value=st.session_state.get("e6b_time", 0.0),
+        disabled=disable_time
+    )
+    st.session_state["e6b_time"] = time_hours
 
-    fuel_burn = st.number_input("Fuel Burn (L/hr)", value=20.0)
+    fuel_burn = st.number_input(
+        "Fuel Burn (L/hr)",
+        value=st.session_state.get("e6b_fuel_burn", 0.0),
+        disabled=disable_fuel_burn
+    )
+    st.session_state["e6b_fuel_burn"] = fuel_burn
 
-    reserve_minutes = st.number_input("Reserve (minutes)", value=30)
-    reserve_percent = st.number_input("Reserve (%)", value=10)
+    reserve_minutes = st.number_input(
+        "Reserve (minutes)",
+        value=st.session_state.get("e6b_reserve", 0),
+        disabled=disable_reserve
+    )
+    st.session_state["e6b_reserve"] = reserve_minutes
 
-    # Convert speed to knots
-    if speed_units == "km/h":
-        speed_knots = speed * 0.539957
-    else:
-        speed_knots = speed
+        # -----------------------------
+    # REQUIRED FIELD HIGHLIGHTING
+    # -----------------------------
+    missing_required = {"flag": False}
 
-    # Convert distance to NM
-    if distance_units == "km":
-        distance_nm = distance * 0.539957
-    else:
-        distance_nm = distance
+    def warn_if_missing(condition, label):
+        if condition:
+            st.markdown(
+                f"<span style='color:red;'>⚠ {label} is required</span>",
+                unsafe_allow_html=True
+            )
+            missing_required["flag"] = True
 
-    # Calculations
-    time_result = None
-    distance_result_nm = None
-    speed_result_knots = None
-    fuel_required = None
+
 
     if solve_for == "Time":
-        time_result = distance_nm / speed_knots if speed_knots > 0 else 0
+        warn_if_missing(speed == 0, "Speed")
+        warn_if_missing(distance == 0, "Distance")
 
     if solve_for == "Distance":
-        distance_result_nm = speed_knots * time_hours
+        warn_if_missing(speed == 0, "Speed")
+        warn_if_missing(time_hours == 0, "Time")
 
     if solve_for == "Speed":
-        speed_result_knots = distance_nm / time_hours if time_hours > 0 else 0
+        warn_if_missing(distance == 0, "Distance")
+        warn_if_missing(time_hours == 0, "Time")
 
     if solve_for == "Fuel":
-        fuel_required = fuel_burn * time_hours
-        reserve_fuel_minutes = fuel_burn * (reserve_minutes / 60)
-        reserve_fuel_percent = fuel_required * (reserve_percent / 100)
-        total_fuel = fuel_required + reserve_fuel_minutes + reserve_fuel_percent
+        warn_if_missing(speed == 0, "Speed")
+        warn_if_missing(distance == 0, "Distance")
+        warn_if_missing(fuel_burn == 0, "Fuel burn")
 
-    # Output
+    # If missing required fields → stop before calculations
+    if missing_required["flag"]:
+        st.info("Enter all required fields to calculate.")
+        st.stop()
+
+    # -----------------------------
+    # UNIT CONVERSIONS
+    # -----------------------------
+
+    speed_knots = speed * 0.539957 if speed_units == "km/h" else speed
+    distance_nm = distance * 0.539957 if distance_units == "km" else distance
+    # -----------------------------
+    # CALCULATIONS
+    # -----------------------------
+    result_time = None
+    result_distance = None
+    result_speed = None
+    result_fuel = None
+    result_reserve = None
+    result_total_fuel = None
+
+    # Solve for TIME
+    if solve_for == "Time":
+        result_time = distance_nm / speed_knots
+
+    # Solve for DISTANCE
+    if solve_for == "Distance":
+        result_distance = speed_knots * time_hours
+
+    # Solve for SPEED
+    if solve_for == "Speed":
+        result_speed = distance_nm / time_hours
+
+    # Solve for FUEL
+    if solve_for == "Fuel":
+        # Auto-calc time
+        result_time = distance_nm / speed_knots
+
+        # Auto-fill time into disabled input
+        st.session_state["e6b_time"] = result_time
+
+        # Fuel calculations
+        result_fuel = fuel_burn * result_time
+        result_reserve = fuel_burn * (reserve_minutes / 60)
+        result_total_fuel = result_fuel + result_reserve
+
+    # -----------------------------
+    # OUTPUT PANEL
+    # -----------------------------
     st.markdown('<div class="instrument-box">', unsafe_allow_html=True)
 
     if solve_for == "Time":
         st.markdown('<div class="instrument-title">Time Required</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="instrument-value">{time_result:.2f} hr</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="instrument-value">{result_time:.2f} hr</div>', unsafe_allow_html=True)
 
     if solve_for == "Distance":
         st.markdown('<div class="instrument-title">Distance Covered</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="instrument-value">{distance_result_nm:.1f} NM</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="instrument-value">{result_distance:.1f} NM</div>', unsafe_allow_html=True)
 
     if solve_for == "Speed":
         st.markdown('<div class="instrument-title">Required Speed</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="instrument-value">{speed_result_knots:.0f} kt</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="instrument-value">{result_speed:.0f} kt</div>', unsafe_allow_html=True)
 
     if solve_for == "Fuel":
+        st.markdown('<div class="instrument-title">Time Enroute</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="instrument-value">{result_time:.2f} hr</div>', unsafe_allow_html=True)
+
         st.markdown('<div class="instrument-title">Trip Fuel</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="instrument-value">{fuel_required:.1f} L</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="instrument-value">{result_fuel:.1f} L</div>', unsafe_allow_html=True)
 
-        st.markdown('<div class="instrument-title">Reserve (Minutes)</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="instrument-value">{reserve_fuel_minutes:.1f} L</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="instrument-title">Reserve (%)</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="instrument-value">{reserve_fuel_percent:.1f} L</div>', unsafe_allow_html=True)
+        st.markdown('<div class="instrument-title">Reserve Fuel</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="instrument-value">{result_reserve:.1f} L</div>', unsafe_allow_html=True)
 
         st.markdown('<div class="instrument-title">Total Fuel Required</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="instrument-value">{total_fuel:.1f} L</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="instrument-value">{result_total_fuel:.1f} L</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # -----------------------------
+    # SHOW WORKING (COLLAPSIBLE)
+    # -----------------------------
+    with st.expander("▼ Show Working"):
+        if solve_for == "Time":
+            st.write(f"""
+**Distance:** {distance_nm:.2f} NM  
+**Speed:** {speed_knots:.2f} kt  
+
+**Formula:**  
+Time = Distance / Speed  
+
+**Working:**  
+Time = {distance_nm:.2f} / {speed_knots:.2f}  
+Time = **{result_time:.2f} hr**
+""")
+
+        if solve_for == "Distance":
+            st.write(f"""
+**Speed:** {speed_knots:.2f} kt  
+**Time:** {time_hours:.2f} hr  
+
+**Formula:**  
+Distance = Speed × Time  
+
+**Working:**  
+Distance = {speed_knots:.2f} × {time_hours:.2f}  
+Distance = **{result_distance:.2f} NM**
+""")
+
+        if solve_for == "Speed":
+            st.write(f"""
+**Distance:** {distance_nm:.2f} NM  
+**Time:** {time_hours:.2f} hr  
+
+**Formula:**  
+Speed = Distance / Time  
+
+**Working:**  
+Speed = {distance_nm:.2f} / {time_hours:.2f}  
+Speed = **{result_speed:.2f} kt**
+""")
+
+        if solve_for == "Fuel":
+            st.write(f"""
+**Distance:** {distance_nm:.2f} NM  
+**Speed:** {speed_knots:.2f} kt  
+
+**Time Calculation:**  
+Time = Distance / Speed  
+Time = {distance_nm:.2f} / {speed_knots:.2f}  
+Time = **{result_time:.2f} hr**
+
+**Fuel Burn:** {fuel_burn:.2f} L/hr  
+**Reserve:** {reserve_minutes} min = {reserve_minutes/60:.2f} hr  
+
+**Trip Fuel:**  
+{fuel_burn:.2f} × {result_time:.2f} = **{result_fuel:.2f} L**
+
+**Reserve Fuel:**  
+{fuel_burn:.2f} × {reserve_minutes/60:.2f} = **{result_reserve:.2f} L**
+
+**Total Fuel:**  
+{result_fuel:.2f} + {result_reserve:.2f} = **{result_total_fuel:.2f} L**
+""")
+
+# ---------------------------------------------------------
+# CUSTOM CSS FOR DISABLED + COMPUTED FIELDS
+# ---------------------------------------------------------
+st.markdown("""
+<style>
+
+    /* Grey-out disabled fields */
+    input[disabled] {
+        background-color: #444 !important;
+        color: #999 !important;
+        border: 1px solid #666 !important;
+    }
+
+    /* Garmin yellow computed fields */
+    .computed-field input[disabled] {
+        background-color: #ffe066 !important;  /* Garmin yellow */
+        color: #000 !important;
+        font-weight: bold !important;
+        border: 2px solid #ffcc33 !important;
+    }
+
+</style>
+""", unsafe_allow_html=True)
