@@ -18,7 +18,7 @@ body {
 }
 .instrument-box {
     background-color: #000;
-    padding: 125px;
+    padding: 100px;
     border-radius: 12px;
     border: 2px solid #A7C7E7;
     margin-top: 20px;
