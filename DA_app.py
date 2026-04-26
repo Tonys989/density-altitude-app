@@ -156,16 +156,27 @@ if menu == "Wind Triangle":
     st.markdown(f"**Track:** {course:03.0f}°")
     st.markdown(f"**Wind From:** {wind_dir:03.0f}° @ {wind_speed:.0f} kt")
 
-    st.markdown('<div class="instrument-box">', unsafe_allow_html=True)
-    st.markdown('<div class="instrument-title">Heading to Fly</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="instrument-value">{heading:03.0f}°</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="instrument-box">
+        <div class="instrument-title">Heading to Fly</div>
+    """, unsafe_allow_html=True)
 
-    st.markdown('<div class="instrument-title">Wind Correction Angle</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="instrument-value">{wca_label}</div>', unsafe_allow_html=True)
+    st.markdown(f"<div class='instrument-value'>{heading:03.0f}°</div>", unsafe_allow_html=True)
 
-    st.markdown('<div class="instrument-title">Groundspeed</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="instrument-value">{groundspeed:.0f} kt</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+        <div class="instrument-title">Wind Correction Angle</div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"<div class='instrument-value'>{wca_label}</div>", unsafe_allow_html=True)
+
+    st.markdown("""
+        <div class="instrument-title">Groundspeed</div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"<div class='instrument-value'>{groundspeed:.0f} kt</div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
 
 # ---------------------------------------------------------
 # MODULE 4 — GLIDE CALCULATOR
