@@ -125,15 +125,23 @@ if menu == "Wind Triangle":
     headwind = wind_speed * math.cos(rel_angle)
 
     wca = math.degrees(math.atan2(crosswind, tas))
+    # Format WCA as Left/Right instead of ±
+    if wca < -0.05:
+    wca_label = f"{abs(wca):.1f}° Left"
+    elif wca > 0.05:
+    wca_label = f"{wca:.1f}° Right"
+    else:
+    wca_label = "0°"
+
     heading = (course + wca) % 360
     groundspeed = tas - headwind
 
     st.markdown('<div class="instrument-box">', unsafe_allow_html=True)
     st.markdown('<div class="instrument-title">Heading to Fly</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="instrument-value">{heading:.0f}°</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="instrument-value">{heading:03.0f}°</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="instrument-title">Wind Correction Angle</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="instrument-value">{wca:.1f}°</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="instrument-value">{wca_label}</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="instrument-title">Groundspeed</div>', unsafe_allow_html=True)
     st.markdown(f'<div class="instrument-value">{groundspeed:.0f} kt</div>', unsafe_allow_html=True)
