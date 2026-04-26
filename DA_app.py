@@ -53,7 +53,7 @@ menu = st.sidebar.radio(
         "Glide Calculator",
         "Crosswind Component",
         "Weight & Balance",
-        "E6B Speed / Time / Distance / Fuel",
+        "Speed / Time / Distance / Fuel",
     ]
 )
 
