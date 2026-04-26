@@ -18,9 +18,9 @@ body {
 }
 .instrument-box {
     background-color: #000;
-    padding: 25px;
+    padding: 125px;
     border-radius: 12px;
-    border: 2px solid #333;
+    border: 2px solid #A7C7E7;
     margin-top: 20px;
 }
 .instrument-title {
