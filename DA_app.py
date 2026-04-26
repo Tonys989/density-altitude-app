@@ -20,7 +20,7 @@ body {
     background-color: #000;
     padding: 100px;
     border-radius: 12px;
-    border: 2px solid #A7C7E7;
+    border: 6px solid #39FF14;
     margin-top: 20px;
 }
 .instrument-title {
