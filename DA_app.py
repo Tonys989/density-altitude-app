@@ -126,7 +126,7 @@ if menu == "Wind Triangle":
     raw_course = f"{course:03d}"
 
     wind_speed = st.number_input("Wind Speed (kt)", value=10.0)
-   raw_wind_dir = st.text_input("Wind Direction (° FROM)", "000")
+    raw_wind_dir = st.text_input("Wind Direction (° FROM)", "000")
 
     if raw_wind_dir.isdigit():
         wind_dir = int(raw_wind_dir)
