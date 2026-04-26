@@ -115,9 +115,10 @@ if menu == "Wind Triangle":
     st.title("🧭 Wind Triangle Calculator")
 
     tas = st.number_input("True Airspeed (kt)", value=90.0)
+    course = st.number_input("Desired Track (° TO)", value=0)
     wind_speed = st.number_input("Wind Speed (kt)", value=10.0)
     wind_dir = st.number_input("Wind Direction (° FROM)", value=270)
-    course = st.number_input("Desired Track (° TO)", value=0)
+    
 
     rel_angle = math.radians(wind_dir - course)
     crosswind = wind_speed * math.sin(rel_angle)
