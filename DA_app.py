@@ -153,27 +153,21 @@ if menu == "Wind Triangle":
     heading = (course + wca) % 360
     groundspeed = tas - headwind
 
-    
-    st.markdown("""
-    <div class="instrument-box">
-        <div class="instrument-title">Heading to Fly</div>
-    """, unsafe_allow_html=True)
+st.markdown(f"""
+<div class="instrument-box">
 
-    st.markdown(f"<div class='instrument-value'>{heading:03.0f}°</div>", unsafe_allow_html=True)
+    <div class="instrument-title">Heading to Fly</div>
+    <div class="instrument-value">{heading:03.0f}°</div>
 
-    st.markdown("""
-        <div class="instrument-title">Wind Correction Angle</div>
-    """, unsafe_allow_html=True)
+    <div class="instrument-title">Wind Correction Angle</div>
+    <div class="instrument-value">{wca_label}</div>
 
-    st.markdown(f"<div class='instrument-value'>{wca_label}</div>", unsafe_allow_html=True)
+    <div class="instrument-title">Groundspeed</div>
+    <div class="instrument-value">{groundspeed:.0f} kt</div>
 
-    st.markdown("""
-        <div class="instrument-title">Groundspeed</div>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
-    st.markdown(f"<div class='instrument-value'>{groundspeed:.0f} kt</div>", unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------
