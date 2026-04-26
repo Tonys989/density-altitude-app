@@ -156,14 +156,14 @@ if menu == "Wind Triangle":
 st.markdown(
     f"""
 <div class="instrument-box">
-    <div class="instrument-title">Heading to Fly</div>
-    <div class="instrument-value">{heading:03.0f}°</div>
+<div class="instrument-title">Heading to Fly</div>
+<div class="instrument-value">{heading:03.0f}°</div>
 
-    <div class="instrument-title">Wind Correction Angle</div>
-    <div class="instrument-value">{wca_label}</div>
+<div class="instrument-title">Wind Correction Angle</div>
+<div class="instrument-value">{wca_label}</div>
 
-    <div class="instrument-title">Groundspeed</div>
-    <div class="instrument-value">{groundspeed:.0f} kt</div>
+<div class="instrument-title">Groundspeed</div>
+<div class="instrument-value">{groundspeed:.0f} kt</div>
 </div>
 """,
     unsafe_allow_html=True
