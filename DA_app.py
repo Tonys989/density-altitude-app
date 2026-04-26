@@ -185,7 +185,7 @@ if menu == "Crosswind Component":
 # MODULE 7 — SPEED / TIME / DISTANCE / FUEL
 # ---------------------------------------------------------
 if menu == "Speed / Time / Distance / Fuel":
-    st.title("⏱️ E6B Speed / Time / Distance / Fuel")
+    st.title("⏱️ Speed / Time / Distance / Fuel")
 
     # -----------------------------
     # CLEAR ALL BUTTON
