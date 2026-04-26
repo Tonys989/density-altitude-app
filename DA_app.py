@@ -158,12 +158,10 @@ st.markdown(
 <div class="instrument-box">
     <div class="instrument-title">Heading to Fly</div>
     <div class="instrument-value">{heading:03.0f}°</div>
-    f"""
-<div class="instrument-box">
+
     <div class="instrument-title">Wind Correction Angle</div>
     <div class="instrument-value">{wca_label}</div>
-    f"""
-<div class="instrument-box">
+
     <div class="instrument-title">Groundspeed</div>
     <div class="instrument-value">{groundspeed:.0f} kt</div>
 </div>
