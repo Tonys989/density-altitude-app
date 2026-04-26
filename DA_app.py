@@ -124,7 +124,7 @@ if menu == "Wind Triangle":
     headwind = wind_speed * math.cos(rel_angle)
 
     wca = math.degrees(math.atan2(crosswind, tas))
-    heading = course + wca
+    heading = (course + wca) % 360
     groundspeed = tas - headwind
 
     st.markdown('<div class="instrument-box">', unsafe_allow_html=True)
