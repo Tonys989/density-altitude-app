@@ -24,14 +24,14 @@ body {
     margin-top: 20px;
 }
 .instrument-title {
-    font-size: 26px;
+    font-size: 30px;
     font-weight: bold;
     color: #39FF14;
     text-align: center;
     margin-bottom: 10px;
 }
 .instrument-value {
-    font-size: 40px;
+    font-size: 50px;
     font-weight: bold;
     color: #04D9FF;
     text-align: center;
@@ -156,13 +156,13 @@ if menu == "Wind Triangle":
 st.markdown(
     f"""
 <div class="instrument-box">
-<div class="instrument-title">HEADINGTO FLY</div>
+<div class="instrument-title">HEADING TO FLY</div>
 <div class="instrument-value">{heading:03.0f}°</div>
 
 <div class="instrument-title">WIND CORRECTION ANGLE</div>
 <div class="instrument-value">{wca_label}</div>
 
-<div class="instrument-title">GROUNDSPEED</div>
+<div class="instrument-title">GROUND SPEED</div>
 <div class="instrument-value">{groundspeed:.0f} kt</div>
 </div>
 """,
