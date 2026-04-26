@@ -17,7 +17,7 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 .instrument-box {
-    background-color: #111;
+    background-color: #000;
     padding: 25px;
     border-radius: 12px;
     border: 2px solid #333;
