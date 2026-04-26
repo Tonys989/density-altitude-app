@@ -13,7 +13,7 @@ st.markdown("""
 <style>
 body {
     background-color: #0a0a0a;
-    color: #e6e6e6;
+    color: #39FF14;
     font-family: 'Segoe UI', sans-serif;
 }
 .instrument-box {
