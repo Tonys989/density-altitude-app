@@ -33,7 +33,7 @@ body {
 .instrument-value {
     font-size: 40px;
     font-weight: bold;
-    color: #2323FF;
+    color: #04D9FF;
     text-align: center;
 }
 </style>
