@@ -4,7 +4,7 @@ import math
 # ---------------------------------------------------------
 # PAGE CONFIG
 # ---------------------------------------------------------
-st.set_page_config(page_title="Electronic Flight Computer", layout="centered")
+st.set_page_config(page_title="Tony's Whizz Wheel", layout="centered")
 
 # ---------------------------------------------------------
 # GARMIN-STYLE THEME (CSS)
@@ -42,7 +42,7 @@ body {
 # ---------------------------------------------------------
 # SIDEBAR MENU
 # ---------------------------------------------------------
-st.sidebar.title("🛩️ Flight Computer Menu")
+st.sidebar.title("Whizz Wheel Menu")
 
 menu = st.sidebar.radio(
     "Select a module:",
@@ -182,7 +182,7 @@ if menu == "Crosswind Component":
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# MODULE 7 — E6B SPEED / TIME / DISTANCE / FUEL
+# MODULE 7 — SPEED / TIME / DISTANCE / FUEL
 # ---------------------------------------------------------
 if menu == "E6B Speed / Time / Distance / Fuel":
     st.title("⏱️ E6B Speed / Time / Distance / Fuel")
