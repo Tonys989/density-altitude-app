@@ -127,11 +127,11 @@ if menu == "Wind Triangle":
     wca = math.degrees(math.atan2(crosswind, tas))
     # Format WCA as Left/Right instead of ±
     if wca < -0.05:
-    wca_label = f"{abs(wca):.1f}° Left"
+        wca_label = f"{abs(wca):.1f}° Left"
     elif wca > 0.05:
-    wca_label = f"{wca:.1f}° Right"
+        wca_label = f"{wca:.1f}° Right"
     else:
-    wca_label = "0°"
+        wca_label = "0°"
 
     heading = (course + wca) % 360
     groundspeed = tas - headwind
