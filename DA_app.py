@@ -26,7 +26,7 @@ body {
 .instrument-title {
     font-size: 26px;
     font-weight: bold;
-    color: #00b4ff;
+    color: #39FF14;
     text-align: center;
     margin-bottom: 10px;
 }
